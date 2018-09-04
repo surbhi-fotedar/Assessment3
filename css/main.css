@@ -13,6 +13,17 @@
   font-size: 24px;
 }
 
+.pull-right {
+  float: right;
+  display: none;
+}
+
+
+/* span:hover+.pull-right {
+  background-color: aquamarine;
+  display: block;
+} */
+
 
 /* Bootsrap styles */
 
@@ -23,4 +34,8 @@
 .btn-lg {
   height: 52px;
   width: 156px;
+}
+
+.list-group li:hover .pull-right {
+  display: block;
 }
