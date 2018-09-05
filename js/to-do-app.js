@@ -1,21 +1,5 @@
 (function() {
 
-
-
-  // document.getElementById("savebtn").addEventListener("click", function() {
-  //   var list = document.getElementById("mylist");
-  //   var item = document.createElement("li");
-  //   item.className = "list-group-item";
-  //   var value = document.getElementById("newToDoInput").value;
-  //   item.innerText = value;
-  //   var checkBox = document.createElement("input");
-  //   checkBox.type = "checkbox";
-  //   list.appendChild(checkBox);
-  //   list.appendChild(item);
-
-
-  // });
-
   var todos = [
       { id: 0, label: 'Learn HTML5' },
       { id: 1, label: 'Learn CSS3 & Bootstrap' },
@@ -27,6 +11,9 @@
     submitBtn = document.getElementById("submitBtn"),
     todoInput = document.getElementById("newToDoInput"),
     item;
+  submitBtn.innerText = 'Save';
+
+
 
   function renderList(list) {
     for (i = 0; i < list.length; i++) {
@@ -43,7 +30,9 @@
       checkBox = document.createElement("input"),
       remove = createDeleteBtn(),
       edit = createEditBtn();
+
     checkBox.type = "checkbox";
+    checkBox.onchange = checkBoxEventHandler;
     li.className = "list-group-item";
     li.appendChild(checkBox);
     li.appendChild(tn);
@@ -58,6 +47,7 @@
     deleteBtn.classList.add('remove');
     deleteBtn.className = "fas fa-trash-alt";
     deleteBtn.addEventListener("click", deleteListItem);
+
     return deleteBtn;
   }
 
@@ -70,20 +60,30 @@
   }
 
   function addListItem() {
-    var newTodo = {};
 
-    newTodo.id = todos.length;
-    newTodo.label = todoInput.value;
-    todos.push(newTodo);
+    if (submitBtn.innerText == 'Save') {
 
-    todosCopy = todos;
+      var newTodo = {};
 
-    // renderList(todos);
+      newTodo.id = todos.length;
+      newTodo.label = todoInput.value;
+      if (/^[a-z\d\-_\s]+$/i.test(newTodo.label)) {
+        todos.push(newTodo);
+      } else {
+        alert("You must write something!");
+      }
+
+
+      todosCopy = todos;
+
+    } else {
+      var updateListItem = document.getElementById("newToDoInput");
+      todos.push(updateListItem);
+    }
+
   }
 
   function deleteListItem() {
-    console.log("Delete Task...");
-
     var listItem = this.parentNode,
       ul = listItem.parentNode,
       flag = myConfirmation(listItem.innerText);
@@ -94,6 +94,8 @@
 
   function myConfirmation(listValue) {
 
+    // var modal = document.getElementById("myModal");
+    // modal.style.display = "block";
     if (confirm("Are you sure you want to delete " + listValue)) {
       return true;
     } else {
@@ -105,23 +107,16 @@
   function editListItem() {
     console.log("Edit Task...");
     var listItem = this.parentNode;
-    todoInput.innerHTML = listItem.innerText;
-    var editInput = todoInput.querySelector('.form-control');
-    var label = todoInput.querySelector("label");
-    var containsClass = listItem.classList.contains("editMode");
-    //If class of the parent is .editmode
-    if (containsClass) {
+    document.getElementById("newToDoInput").value = listItem.innerText;
+    submitBtn.innerText = 'Update';
 
-      //switch to .editmode
-      //label becomes the inputs value.
-      label.innerText = editInput.value;
-    } else {
-      editInput.value = label.innerText;
-    }
-
-    //toggle .editmode on the parent.
-    listItem.classList.toggle("editMode");
   }
+
+  function checkBoxEventHandler() {
+    var listItem = this.parentNode;
+    listItem.innerText.strike();
+  }
+
 
   function addEventListeners() {
     submitBtn.addEventListener("click", addListItem);
