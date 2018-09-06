@@ -16,25 +16,35 @@
 
 
   function renderList(list) {
-    for (i = 0; i < list.length; i++) {
-      item = createListItem(list[i].label);
+    if (list.length <= 4) {
+      for (i = 0; i < list.length; i++) {
+        item = createListItem(list[i].label);
 
-      console.log(list[i].label);
-      ul.appendChild(item);
+        console.log(list[i].label);
+        ul.appendChild(item);
+        document.getElementById("newToDoInput").value = '';
+      }
+    } else {
+      while (i < list.length) {
+        item = createListItem(list[i].label);
+
+        console.log(list[i].label);
+        ul.appendChild(item);
+        document.getElementById("newToDoInput").value = '';
+        i++;
+      }
     }
+
   }
 
   function createListItem(label) {
     var li = document.createElement("li"),
       tn = document.createTextNode(label),
-      checkBox = document.createElement("input"),
+      chkbox = createChkBox(),
       remove = createDeleteBtn(),
       edit = createEditBtn();
-
-    checkBox.type = "checkbox";
-    checkBox.onchange = checkBoxEventHandler;
     li.className = "list-group-item";
-    li.appendChild(checkBox);
+    li.appendChild(chkbox);
     li.appendChild(tn);
     li.appendChild(edit);
     li.appendChild(remove);
@@ -42,10 +52,19 @@
     return li;
   }
 
+  function createChkBox(item) {
+    var checkBox = document.createElement("input");
+    checkBox.setAttribute("type", "checkbox");
+    checkBox.className = "mr-2";
+    checkBox.onchange = checkBoxEventHandler;
+    return checkBox;
+  }
+
   function createDeleteBtn() {
     var deleteBtn = document.createElement("button");
-    deleteBtn.classList.add('remove');
-    deleteBtn.className = "fas fa-trash-alt";
+
+    deleteBtn.className = "fas fa-trash-alt pull-right btn btn-light";
+
     deleteBtn.addEventListener("click", deleteListItem);
 
     return deleteBtn;
@@ -53,8 +72,7 @@
 
   function createEditBtn() {
     var editBtn = document.createElement("button");
-    editBtn.classList.add('edit');
-    editBtn.className = "fas fa-pencil-alt";
+    editBtn.className = "fas fa-pencil-alt pull-right btn btn-light";
     editBtn.addEventListener("click", editListItem);
     return editBtn;
   }
@@ -72,24 +90,22 @@
       } else {
         alert("You must write something!");
       }
-
-
-      todosCopy = todos;
-
     } else {
       var updateListItem = document.getElementById("newToDoInput");
       todos.push(updateListItem);
     }
 
+    renderList(todos);
+
   }
 
   function deleteListItem() {
     var listItem = this.parentNode,
-      ul = listItem.parentNode,
-      flag = myConfirmation(listItem.innerText);
-
+      ul = listItem.parentNode;
+    flag = myConfirmation(listItem.innerText);
+    // this.className = "modal";
     //Remove the parent list item from the ul.
-    if (flag) { ul.removeChild(listItem); }
+    // if (flag) { ul.removeChild(listItem); }
   }
 
   function myConfirmation(listValue) {
@@ -114,7 +130,12 @@
 
   function checkBoxEventHandler() {
     var listItem = this.parentNode;
-    listItem.innerText.strike();
+    if (this.checked) {
+      listItem.style.textDecoration = "line-through";
+    } else {
+      listItem.style.textDecoration = "none";
+    }
+
   }
 
 
@@ -124,8 +145,7 @@
   }
 
   function init() {
-    todosCopy = todos;
-    renderList(todosCopy);
+    renderList(todos);
     addEventListeners();
   }
 
