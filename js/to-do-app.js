@@ -1,58 +1,55 @@
 (function() {
-
+  'use strict';
   var todos = [
       { id: 0, label: 'Learn HTML5' },
       { id: 1, label: 'Learn CSS3 & Bootstrap' },
       { id: 2, label: 'Learn javascript Basic concepts' },
       { id: 3, label: 'Learn Javascript Advanced Concepts' }
     ],
-    todosCopy,
-    ul = document.getElementById("mylist"),
+    listGrp = document.getElementById("mylist"),
     submitBtn = document.getElementById("submitBtn"),
     todoInput = document.getElementById("newToDoInput"),
     item;
+
   submitBtn.innerText = 'Save';
 
-
-
   function renderList(list) {
+    var i;
     if (list.length <= 4) {
       for (i = 0; i < list.length; i++) {
         item = createListItem(list[i].label);
-
-        console.log(list[i].label);
-        ul.appendChild(item);
+        listGrp.appendChild(item);
         document.getElementById("newToDoInput").value = '';
       }
     } else {
       while (i < list.length) {
         item = createListItem(list[i].label);
-
-        console.log(list[i].label);
-        ul.appendChild(item);
+        listGrp.appendChild(item);
         document.getElementById("newToDoInput").value = '';
         i++;
       }
+
     }
 
   }
 
   function createListItem(label) {
-    var li = document.createElement("li"),
+    var listItem = document.createElement("li"),
       tn = document.createTextNode(label),
       chkbox = createChkBox(),
       remove = createDeleteBtn(),
       edit = createEditBtn();
-    li.className = "list-group-item";
-    li.appendChild(chkbox);
-    li.appendChild(tn);
-    li.appendChild(edit);
-    li.appendChild(remove);
+    listItem.className = "list-group-item";
+    listItem.style.cursor = "pointer";
+    listItem.appendChild(chkbox);
+    listItem.appendChild(tn);
+    listItem.appendChild(edit);
+    listItem.appendChild(remove);
 
-    return li;
+    return listItem;
   }
 
-  function createChkBox(item) {
+  function createChkBox() {
     var checkBox = document.createElement("input");
     checkBox.setAttribute("type", "checkbox");
     checkBox.className = "mr-2";
@@ -60,58 +57,59 @@
     return checkBox;
   }
 
+  function createAlert() {
+
+    var div = document.createElement("div");
+
+    // <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    //   <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    //   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    //     <span aria-hidden="true">&times;</span>
+    //   </button>
+    // </div>
+  }
+
   function createDeleteBtn() {
-    var deleteBtn = document.createElement("button");
-
-    deleteBtn.className = "fas fa-trash-alt pull-right btn btn-light";
-
+    var deleteBtn = document.createElement("span");
+    deleteBtn.className = "fas fa-trash-alt pull-right mr-2";
     deleteBtn.addEventListener("click", deleteListItem);
-
     return deleteBtn;
   }
 
   function createEditBtn() {
-    var editBtn = document.createElement("button");
-    editBtn.className = "fas fa-pencil-alt pull-right btn btn-light";
+    var editBtn = document.createElement("span");
+    editBtn.className = "fas fa-pencil-alt pull-right";
     editBtn.addEventListener("click", editListItem);
     return editBtn;
   }
 
   function addListItem() {
-
-    if (submitBtn.innerText == 'Save') {
-
-      var newTodo = {};
-
-      newTodo.id = todos.length;
-      newTodo.label = todoInput.value;
-      if (/^[a-z\d\-_\s]+$/i.test(newTodo.label)) {
-        todos.push(newTodo);
-      } else {
-        alert("You must write something!");
-      }
+    var newTodo = {};
+    newTodo.id = todos.length;
+    newTodo.label = todoInput.value;
+    if (/^[a-z\d\-_\s]+$/i.test(newTodo.label)) {
+      todos.push(newTodo);
     } else {
-      var updateListItem = document.getElementById("newToDoInput");
-      todos.push(updateListItem);
+      alert("You must write something!");
     }
 
+    submitBtn.innerText = 'Save';
     renderList(todos);
 
   }
 
+  /*jshint -W040 */
   function deleteListItem() {
     var listItem = this.parentNode,
-      ul = listItem.parentNode;
-    flag = myConfirmation(listItem.innerText);
-    // this.className = "modal";
+      ul = listItem.parentNode,
+      flag = myConfirmation(listItem.innerText);
+
     //Remove the parent list item from the ul.
-    // if (flag) { ul.removeChild(listItem); }
+    if (flag) { ul.removeChild(listItem); }
   }
 
   function myConfirmation(listValue) {
 
-    // var modal = document.getElementById("myModal");
-    // modal.style.display = "block";
     if (confirm("Are you sure you want to delete " + listValue)) {
       return true;
     } else {
@@ -121,11 +119,9 @@
   }
 
   function editListItem() {
-    console.log("Edit Task...");
     var listItem = this.parentNode;
     document.getElementById("newToDoInput").value = listItem.innerText;
     submitBtn.innerText = 'Update';
-
   }
 
   function checkBoxEventHandler() {
