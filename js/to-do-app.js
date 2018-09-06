@@ -1,5 +1,6 @@
 (function() {
   'use strict';
+
   var todos = [
       { id: 0, label: 'Learn HTML5' },
       { id: 1, label: 'Learn CSS3 & Bootstrap' },
@@ -58,18 +59,6 @@
     return checkBox;
   }
 
-  function createAlert() {
-
-    var div = document.createElement("div");
-
-    // <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    //   <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-    //   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    //     <span aria-hidden="true">&times;</span>
-    //   </button>
-    // </div>
-  }
-
   function createDeleteBtn() {
     var deleteBtn = document.createElement("span");
     deleteBtn.className = "fas fa-trash-alt pull-right mr-2";
@@ -88,14 +77,18 @@
     var newTodo = {};
     newTodo.id = todos.length;
     newTodo.label = todoInput.value;
-    if (/^[a-z\d\-_\s]+$/i.test(newTodo.label)) {
+    if (newTodo.label == '') {
+      alert("You must write something");
+    } else if (/^[a-z\d\s]+$/i.test(newTodo.label)) {
       todos.push(newTodo);
+      renderList(todos);
     } else {
-      alert("You must write something!");
+      alert("You must write something valid!");
+      document.getElementById("newToDoInput").value = '';
     }
 
     submitBtn.innerText = 'Save';
-    renderList(todos);
+
 
   }
 
