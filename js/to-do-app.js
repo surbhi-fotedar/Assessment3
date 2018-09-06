@@ -9,12 +9,13 @@
     listGrp = document.getElementById("mylist"),
     submitBtn = document.getElementById("submitBtn"),
     todoInput = document.getElementById("newToDoInput"),
+    i,
     item;
 
   submitBtn.innerText = 'Save';
 
   function renderList(list) {
-    var i;
+
     if (list.length <= 4) {
       for (i = 0; i < list.length; i++) {
         item = createListItem(list[i].label);
@@ -98,14 +99,13 @@
 
   }
 
-  /*jshint -W040 */
   function deleteListItem() {
     var listItem = this.parentNode,
-      ul = listItem.parentNode,
+      parent = listItem.parentNode,
       flag = myConfirmation(listItem.innerText);
 
     //Remove the parent list item from the ul.
-    if (flag) { ul.removeChild(listItem); }
+    if (flag) { parent.removeChild(listItem); }
   }
 
   function myConfirmation(listValue) {
@@ -119,9 +119,12 @@
   }
 
   function editListItem() {
-    var listItem = this.parentNode;
+    var listItem = this.parentNode,
+      parent;
     document.getElementById("newToDoInput").value = listItem.innerText;
     submitBtn.innerText = 'Update';
+    parent = listItem.parentNode;
+    parent.removeChild(listItem);
   }
 
   function checkBoxEventHandler() {
