@@ -15,6 +15,7 @@
 
   submitBtn.innerText = 'Save';
 
+  //render final list
   function renderList(list) {
 
     if (list.length <= 4) {
@@ -35,6 +36,7 @@
 
   }
 
+  //creating list Item
   function createListItem(label) {
     var listItem = document.createElement("li"),
       tn = document.createTextNode(label),
@@ -51,6 +53,7 @@
     return listItem;
   }
 
+  //Creating CheckBox
   function createChkBox() {
     var checkBox = document.createElement("input");
     checkBox.setAttribute("type", "checkbox");
@@ -59,6 +62,7 @@
     return checkBox;
   }
 
+  //Create Delete Button
   function createDeleteBtn() {
     var deleteBtn = document.createElement("span");
     deleteBtn.className = "fas fa-trash-alt pull-right mr-2";
@@ -66,6 +70,7 @@
     return deleteBtn;
   }
 
+  //Create Edit Button
   function createEditBtn() {
     var editBtn = document.createElement("span");
     editBtn.className = "fas fa-pencil-alt pull-right";
@@ -73,6 +78,7 @@
     return editBtn;
   }
 
+  // Adding New List Items
   function addListItem() {
     var newTodo = {};
     newTodo.id = todos.length;
@@ -92,6 +98,7 @@
 
   }
 
+  //Deleting List Items
   function deleteListItem() {
     var listItem = this.parentNode,
       parent = listItem.parentNode,
@@ -111,6 +118,7 @@
 
   }
 
+  //Editing List Items
   function editListItem() {
     var listItem = this.parentNode,
       parent;
@@ -120,6 +128,7 @@
     parent.removeChild(listItem);
   }
 
+  //Checkbox strike through event handler
   function checkBoxEventHandler() {
     var listItem = this.parentNode;
     if (this.checked) {
@@ -132,10 +141,11 @@
 
 
   function addEventListeners() {
-    submitBtn.addEventListener("click", addListItem);
+    submitBtn.addEventListener("click", addListItem); // New item adding event Handler
 
   }
 
+  //Initial function call
   function init() {
     renderList(todos);
     addEventListeners();
