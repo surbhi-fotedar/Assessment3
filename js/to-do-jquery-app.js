@@ -48,13 +48,8 @@
       edit = createEditBtn();
     listItem.addClass('list-group-item');
     listItem.css('cursor', 'pointer');
-    //listItem.style.cursor = "pointer";
     listItem.prepend(chkbox);
     listItem.append(remove, edit);
-    //listItem.appendChild(chkbox);
-    // listItem.appendChild(tn);
-    // listItem.appendChild(edit);
-    // listItem.appendChild(remove);
 
     return listItem;
   }
@@ -71,7 +66,7 @@
   //checkbox event handler
   function checkBoxEventHandler() {
     var parent = $(this).parent();
-    if ($(this).checked) {
+    if ($(this).prop('checked') == true) {
       parent.css('text-decoration', 'line-through');
       createAlert('completed ' + parent.innerText, 'success');
     } else {
@@ -85,7 +80,7 @@
   function createEditBtn() {
     var editBtn = $('<span></span>');
     editBtn.addClass('fas fa-pencil-alt pull-right');
-    editBtn.click(editListItem());
+    editBtn.click(editListItem);
     return editBtn;
   }
 
@@ -102,7 +97,7 @@
   function createDeleteBtn() {
     var deleteBtn = $('<span></span>');
     deleteBtn.addClass('fas fa-trash-alt pull-right ml-2');
-    deleteBtn.click(deleteListItem());
+    deleteBtn.click(deleteListItem);
     return deleteBtn;
   }
 
@@ -166,7 +161,7 @@
   }
 
   function addEventListeners() {
-    submitBtn.click(handleSubmitBtn()); // New item adding event Handler
+    submitBtn.click(handleSubmitBtn); // New item adding event Handler
 
   }
 
