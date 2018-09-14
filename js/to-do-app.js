@@ -111,6 +111,8 @@
   }
 
   function createDeleteModal() {
+
+
     //     <div class="modal" tabindex="-1" role="dialog">
     //   <div class="modal-dialog" role="document">
     //     <div class="modal-content">
@@ -133,6 +135,13 @@
   }
 
   function createAlert(msg, type) {
+
+    //     <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    //   <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    //   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    //     <span aria-hidden="true">&times;</span>
+    //   </button>
+    // </div>
     var successTitle = '<strong>Well done!</strong> You successfully ',
       dangerTitle = '<strong>Something went wrong!</strong> The operation was not successful',
       dismissBtn = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
