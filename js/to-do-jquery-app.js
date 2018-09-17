@@ -68,10 +68,10 @@
     var parent = $(this).parent();
     if ($(this).prop('checked') == true) {
       parent.css('text-decoration', 'line-through');
-      createAlert('completed ' + parent.innerText, 'success');
+      createAlert('completed ' + parent.text(), 'success');
     } else {
       parent.css('text-decoration', 'none');
-      //removeAlert();
+      removeAlert();
     }
 
   }
@@ -86,11 +86,10 @@
 
   //Editing List Items
   function editListItem() {
-    // updateToDoItem = this.parentElement;
-    // todoLabel.innerText = 'Update to-do item';
-    // todoInput.value = updateToDoItem.innerText;
-    // // updateToDoItem.className = 'alert-item';
-    // submitBtn.innerText = 'Update';
+    updateToDoItem = $(this).parent();
+    todoLabel.text('Update to-do item');
+    todoInput.val(updateToDoItem.text());
+    submitBtn.text('Update');
 
   }
   //Create Delete Button
@@ -130,6 +129,8 @@
       cName,
       alert;
 
+    console.log(parent[0]);
+    console.log(parent[1]);
     if (type === 'success') {
       cName = 'alert alert-success alert-dismissible fade show';
       alertTxt = successTitle + msg + dismissBtn;
@@ -142,13 +143,17 @@
     }
     alert = addCSSClass(div, cName);
     alert.attr('role', 'alert');
-    alert.val(alertTxt);
+    alert.html(alertTxt);
 
-    parent.children('parent[0].first').before(alert);
-    //parent[0].insertBefore(alert, parent[0].firstChild);
+    $(alert).insertBefore(parent[1]);
   }
 
+  function removeAlert() {
+    var alerts = $('.alert').parent(),
+      parent = $(alerts[0]).parent();
 
+    $(parent).remove('parent:first-Child');
+  }
 
   function handleSubmitBtn() {
     if (submitBtn.text('Save')) {
