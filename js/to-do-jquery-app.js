@@ -35,7 +35,7 @@
   }
 
   function removeListItems() {
-    while (listGrp.find(children())) {
+    while (listGrp.children().length > 0) {
       listGrp.empty();
     }
   }
@@ -68,7 +68,7 @@
     var parent = $(this).parent();
     if ($(this).prop('checked') == true) {
       parent.css('text-decoration', 'line-through');
-      createAlert('completed ' + parent.text(), 'success');
+      createAlert('completed <u><strong>' + parent.text() + '.</strong></u>', 'success');
     } else {
       parent.css('text-decoration', 'none');
       removeAlert();
@@ -84,13 +84,36 @@
     return editBtn;
   }
 
-  //Editing List Items
+  //Update Items
   function editListItem() {
     updateToDoItem = $(this).parent();
     todoLabel.text('Update to-do item');
     todoInput.val(updateToDoItem.text());
     submitBtn.text('Update');
 
+  }
+
+  //Update list items
+  function updateListItem() {
+    var updatedToDo = todoInput.val();
+
+    for (var i = 0; i < todos.length; i++) {
+      if (todos[i].label == updateToDoItem.text()) {
+        todos[i].label = updatedToDo;
+        if (todos[i].label.trim() == '') {
+          alert("You must write something");
+        } else if (/^[a-z\d\s]+$/i.test(todos[i].label)) {
+          removeListItems();
+          renderList(todos);
+          createAlert('updated <u><strong>' + updatedToDo + '.</strong></u>', 'success');
+        } else {
+          alert("You must write something valid!");
+        }
+      }
+    }
+    todoLabel.text('New to-do item');
+    todoInput.text('');
+    submitBtn.text('Save');
   }
   //Create Delete Button
   function createDeleteBtn() {
@@ -162,12 +185,12 @@
   // }
 
   function handleSubmitBtn() {
-    if (submitBtn.text('Save')) {
+    if (submitBtn.text() === 'Save') {
       alert('hello save');
       //addListItem();
     } else {
-      alert('hello');
-      //updateListItem();
+      //alert('hello');
+      updateListItem();
     }
   }
 
