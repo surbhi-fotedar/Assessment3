@@ -129,8 +129,6 @@
       cName,
       alert;
 
-    console.log(parent[0]);
-    console.log(parent[1]);
     if (type === 'success') {
       cName = 'alert alert-success alert-dismissible fade show';
       alertTxt = successTitle + msg + dismissBtn;
@@ -145,15 +143,23 @@
     alert.attr('role', 'alert');
     alert.html(alertTxt);
 
-    $(alert).insertBefore(parent[1]);
+    $(alert).insertBefore(parent[0]);
   }
 
   function removeAlert() {
-    var alerts = $('.alert').parent(),
-      parent = $(alerts[0]).parent();
+    // var alerts = $('.alert'),
+    //   parent = $(alerts[0]).parent();
 
-    $(parent).remove('parent:first-Child');
+    // $(parent).remove(parent[0]);
+    $('.alert').remove();
   }
+
+  // function removeAlert() {
+  //   var alerts = document.getElementsByClassName('alert'),
+  //     parent = alerts[0].parentElement;
+
+  //   parent.removeChild(parent.firstChild);
+  // }
 
   function handleSubmitBtn() {
     if (submitBtn.text('Save')) {
