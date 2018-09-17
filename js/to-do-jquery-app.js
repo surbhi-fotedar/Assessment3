@@ -125,22 +125,32 @@
 
   //Deleting List Items
   function deleteListItem() {
-    // var listItem = this.parentNode,
-    //   flag = myConfirmation(listItem.innerText);
+    var listItem = $(this).parent(),
+      flag = myConfirmation(listItem.text());
 
-    // //Remove the item from todos.
-    // if (flag) {
-    //   for (var i = 0; i < todos.length; i++) {
-    //     if (todos[i].label == listItem.innerText) {
-    //       todos.splice(i, 1);
-    //       console.log(todos);
-    //       removeListItems();
-    //       renderList(todos);
-    //       createAlert('Deleted <u><strong>' + listItem.innerText + '.</strong></u>', 'success');
-    //     }
-    //   }
+    //Remove the item from todos.
+    if (flag) {
+      for (var i = 0; i < todos.length; i++) {
+        if (todos[i].label === listItem.text()) {
+          todos.splice(i, 1);
+          console.log(todos);
+          removeListItems();
+          renderList(todos);
+          createAlert('Deleted <u><strong>' + listItem.text() + '.</strong></u>', 'success');
+        }
+      }
 
-    // }
+    }
+  }
+
+  function myConfirmation(listValue) {
+
+    if (confirm("Are you sure you want to delete " + listValue)) {
+      return true;
+    } else {
+      return false;
+    }
+
   }
 
   function createAlert(msg, type) {
