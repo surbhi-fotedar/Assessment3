@@ -126,7 +126,7 @@
   //Deleting List Items
   function deleteListItem() {
     var listItem = $(this).parent(),
-      flag = myConfirmation(listItem.text());
+      flag = createDeleteModal(listItem.text());
 
     //Remove the item from todos.
     if (flag) {
@@ -143,14 +143,76 @@
     }
   }
 
-  function myConfirmation(listValue) {
+  // function myConfirmation(listValue) {
 
-    if (confirm("Are you sure you want to delete " + listValue)) {
-      return true;
-    } else {
-      return false;
-    }
+  //   if (confirm("Are you sure you want to delete " + listValue)) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
 
+  // }
+
+  function createDeleteModal(listValue) {
+
+    var modal = addCSSClass(div, 'modal'),
+      modalDialog = addCSSClass(div, 'modal-dialog'),
+      modalContent = addCSSClass(div, 'modal-content'),
+      modalHeader = addCSSClass(div, 'modal-header'),
+      modalBody = addCSSClass(div, 'modal-body'),
+      modalFooter = addCSSClass(div, 'modal-footer'),
+      modalHead = ' <h5 class="modal-title bg-danger text-white">Confirm</h5>',
+      closeBtn = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+      modalTitle = modalHead + closeBtn,
+      modalPara = '<p>Are you sure you want to delete</p>',
+      deleteText = modalPara + listValue + '?',
+      secondaryBtn = '<button type="button" class="btn btn-outline-danger btnsize" data-dismiss="modal">No</button>',
+      primaryBtn = '<button type="button" class="btn btn-danger btnsize">Yes</button>',
+      modalFooterText = secondaryBtn + primaryBtn,
+      parent = $('.list-to-do');
+
+
+    modal.attr('tabindex', '-1');
+    modal.attr('role', 'dialog');
+    modalDialog.attr('role', 'document');
+
+
+
+    modalHeader.append(modalTitle);
+    modalContent.append(modalHeader);
+
+    modalBody.append(deleteText);
+    modalContent.append(modalBody);
+
+    modalFooter.append(modalFooterText);
+    modalContent.append(modalFooter);
+
+    modalDialog.append(modalContent);
+    modal.append(modalDialog);
+
+    // $(alert).insertBefore(parent[1]);
+    parent.append(modal);
+
+
+    //     <div class="modal" tabindex="-1" role="dialog">
+    //   <div class="modal-dialog" role="document">
+    //     <div class="modal-content">
+    //       <div class="modal-header">
+    //         <h5 class="modal-title">Modal title</h5>
+    //         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    //           <span aria-hidden="true">&times;</span>
+    //         </button>
+    //       </div>
+    //       <div class="modal-body">
+    //         <p>Modal body text goes here.</p>
+    //       </div>
+    //       <div class="modal-footer">
+    //         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    //         <button type="button" class="btn btn-primary">Save changes</button>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
   }
 
   function createAlert(msg, type) {
@@ -176,7 +238,14 @@
     alert.attr('role', 'alert');
     alert.html(alertTxt);
 
-    $(alert).insertBefore(parent[0]);
+    $(alert).insertBefore(parent[1]);
+
+    //     <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    //   <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    //   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    //     <span aria-hidden="true">&times;</span>
+    //   </button>
+    // </div>
   }
 
   function removeAlert() {
