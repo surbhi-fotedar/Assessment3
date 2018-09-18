@@ -11,7 +11,7 @@
   <title>To-do Application</title>
 </head>
 
-<body class="body-class">
+<body>
   <div class="container">
     <div class="jumbotron jumbotron-fluid">
       <div class="container title">
@@ -40,8 +40,26 @@
       <label for="newToDo" class="list-label"><b>To-do items</b></label>
       <ul class="list-group" id="mylist">
       </ul>
+    </div>
+  </div>
 
-
+  <!-- Modal -->
+  <div class="modal fade" id="todoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="modalTitle">Confirm</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span class="text-white" aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+        </div>
+        <div class="modal-footer" id="modalFooter">
+          <button type="button" class="btn btn-md btn-danger" id="todoYes" data-dismiss="modal">Yes</button>
+          <button type="button" class="btn btn-md btn-outline-danger" data-dismiss="modal">No</button>
+        </div>
+      </div>
     </div>
   </div>
 

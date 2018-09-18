@@ -119,6 +119,10 @@
   function createDeleteBtn() {
     var deleteBtn = $('<span></span>');
     deleteBtn.addClass('fas fa-trash-alt pull-right ml-2');
+    deleteBtn.attr({
+      'data-toggle': 'modal',
+      'data-target': '#todoModal'
+    });
     deleteBtn.click(deleteListItem);
     return deleteBtn;
   }
@@ -126,10 +130,14 @@
   //Deleting List Items
   function deleteListItem() {
     var listItem = $(this).parent(),
-      flag = createDeleteModal(listItem.text());
+      // confirmTxt = listItem.text(),
+      modalBody = $('#modalBody'),
+      modalBodtTxt = $('<p>Are you sure you want to delete <strong>' + listItem.text() + '</strong>?</p>')
+
+    modalBody.html(modalBodtTxt);
 
     //Remove the item from todos.
-    if (flag) {
+    $('#todoYes').click(function() {
       for (var i = 0; i < todos.length; i++) {
         if (todos[i].label === listItem.text()) {
           todos.splice(i, 1);
@@ -139,8 +147,23 @@
           createAlert('Deleted <u><strong>' + listItem.text() + '.</strong></u>', 'success');
         }
       }
+    });
 
-    }
+    // flag = createDeleteModal('<strong>' + listItem.text() + '</strong>');
+
+    //Remove the item from todos.
+    // if (flag) {
+    //   for (var i = 0; i < todos.length; i++) {
+    //     if (todos[i].label === listItem.text()) {
+    //       todos.splice(i, 1);
+    //       console.log(todos);
+    //       removeListItems();
+    //       renderList(todos);
+    //       createAlert('Deleted <u><strong>' + listItem.text() + '.</strong></u>', 'success');
+    //     }
+    //   }
+
+    // }
   }
 
   // function myConfirmation(listValue) {
@@ -153,23 +176,28 @@
 
   // }
 
+  function createDiv() {
+    var div = $('<div></div>');
+    return div;
+  }
+
   function createDeleteModal(listValue) {
 
-    var modal = addCSSClass(div, 'modal'),
-      modalDialog = addCSSClass(div, 'modal-dialog'),
-      modalContent = addCSSClass(div, 'modal-content'),
-      modalHeader = addCSSClass(div, 'modal-header'),
-      modalBody = addCSSClass(div, 'modal-body'),
-      modalFooter = addCSSClass(div, 'modal-footer'),
+    var modal = addCSSClass(createDiv(), 'modal'),
+      modalDialog = addCSSClass(createDiv(), 'modal-dialog'),
+      modalContent = addCSSClass(createDiv(), 'modal-content'),
+      modalHeader = addCSSClass(createDiv(), 'modal-header'),
+      modalBody = addCSSClass(createDiv(), 'modal-body'),
+      modalFooter = addCSSClass(createDiv(), 'modal-footer'),
       modalHead = ' <h5 class="modal-title bg-danger text-white">Confirm</h5>',
       closeBtn = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
       modalTitle = modalHead + closeBtn,
       modalPara = '<p>Are you sure you want to delete</p>',
-      deleteText = modalPara + listValue + '?',
+      deleteText = modalPara + listValue + ' ?',
       secondaryBtn = '<button type="button" class="btn btn-outline-danger btnsize" data-dismiss="modal">No</button>',
       primaryBtn = '<button type="button" class="btn btn-danger btnsize">Yes</button>',
       modalFooterText = secondaryBtn + primaryBtn,
-      parent = $('.list-to-do');
+      parent = $('body');
 
 
     modal.attr('tabindex', '-1');
