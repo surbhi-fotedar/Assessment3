@@ -38,16 +38,13 @@
   display: block;
 }
 
-.modal {
-  position: absolute;
-  margin: auto;
+.modal-content {
   height: 336px;
-  width: 100%;
+  width: 781px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
 .btnsize {
   height: 38px;
   width: 84px;
-  text-align: center;
 }
