@@ -150,7 +150,7 @@
   function deleteListItem() {
     var listItem = $(this).parent(),
       modalBody = $('#modalBody'),
-      modalBodtTxt = $('<p>Are you sure you want to delete <strong>' + listItem.text() + '</strong>?</p>')
+      modalBodtTxt = $('<p>Are you sure you want to delete <strong>' + listItem.text() + '</strong>?</p>');
 
     modalBody.html(modalBodtTxt);
 
