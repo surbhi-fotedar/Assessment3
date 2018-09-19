@@ -124,15 +124,16 @@
         } else if (/^[a-z\d\s]+$/i.test(todos[i].label)) {
           removeListItems();
           renderList(todos);
+          todoLabel.text('New to-do item');
+          todoInput.text('');
+          submitBtn.text('Save');
           createAlert('updated <u><strong>' + updatedToDo + '.</strong></u>', 'success');
         } else {
           alert("You must write something valid!");
         }
       }
     }
-    todoLabel.text('New to-do item');
-    todoInput.text('');
-    submitBtn.text('Save');
+
   }
   //Create Delete Button
   function createDeleteBtn() {
@@ -167,11 +168,6 @@
       }
     });
 
-  }
-
-  function createDiv() {
-    var div = $('<div></div>');
-    return div;
   }
 
   function createAlert(msg, type) {
