@@ -16,7 +16,7 @@ let todos: { id: number, label: string }[] = [
     submitBtn.textContent= 'Save';
 
     function addCSSClass(item :HTMLElement, cName :string) :HTMLElement{
-      item.classList.add(cName);
+      item.className=cName;
       return item;
     }
 
@@ -59,16 +59,76 @@ let todos: { id: number, label: string }[] = [
     let checkBox = document.createElement('input');
     checkBox.setAttribute('type','checkbox');
     checkBox.className = 'mr-2';
-    //checkBox.onchange = checkBoxEventHandler;
+    checkBox.onchange = checkBoxEventHandler;
     return checkBox;
   }
+
+     //Checkbox strike through event handler
+     function checkBoxEventHandler() :void{
+      let listItem :HTMLElement = this.parentNode;
+
+      if (this.checked) {
+        listItem.style.textDecoration = 'line-through';
+        createAlert('completed ' + listItem.innerText, 'success');
+      } else {
+        listItem.style.textDecoration = 'none';
+        removeAlert();
+      }
+  
+    }
+
+     
+    // Adding New List Items
+    function addListItem() :void{
+      let newTodo ={id:todos.length,label:(<HTMLInputElement>todoInput).value};
+
+      if (newTodo.label == '') {
+        alert('You must write something');
+      } else if (/^[a-z\d\s]+$/i.test(newTodo.label)) {
+        todos.push(newTodo);
+        removeListItems();
+        renderList(todos);
+        createAlert('created <u><strong>' + newTodo.label + '.</strong></u>', 'success');
+      } else {
+        alert('You must write something valid!');
+       }
+      (<HTMLInputElement>todoInput).value = '';
+      submitBtn.textContent = 'Save';
+    }
+  
 
   //Create Delete Button
   function createDeleteBtn() : HTMLElement{
     let deleteBtn = document.createElement('span');
     deleteBtn.className = 'fas fa-trash-alt pull-right mr-2';
+    deleteBtn.setAttribute('data-toggle','modal');
+    deleteBtn.setAttribute('data-target', '#todoModal');
     deleteBtn.addEventListener('click', deleteListItem);
     return deleteBtn;
+  }
+
+   //Deleting List Items
+   function deleteListItem() :void{
+    let listItem : HTMLElement = this.parentNode,
+        modalBody : HTMLElement = document.getElementById('modalBody'),
+        modalBodyTxt :string = '<p>Are you sure you want to delete <strong>' + listItem.textContent + '</strong>?</p>';
+      
+      modalBody.innerHTML=modalBodyTxt;
+
+    //Remove the item from todos.
+    document.getElementById('todoYes').addEventListener('click',() =>
+    {
+      for (let i :number = 0; i < todos.length; i++) {
+        if (todos[i].label === listItem.innerText) {
+          todos.splice(i, 1);
+          console.log(todos);
+          removeListItems();
+          renderList(todos);
+          createAlert('Deleted <u><strong>' + listItem.innerText + '.</strong></u>', 'success');
+        }
+      }
+
+    }); 
   }
 
   //Create Edit Button
@@ -79,71 +139,82 @@ let todos: { id: number, label: string }[] = [
     return editBtn;
   }
 
-  function handleSubmitBtn() {
-    if (submitBtn.textContent == 'Save') {
-      alert('save');
-      //addListItem();
-    } else {
-      alert('update');
-      //updateListItem();
-    }
-  }
-
-    //Deleting List Items
-    function deleteListItem() {
-      alert('delete item!!');
-      // var listItem = this.parentNode,
-      //   flag = myConfirmation(listItem.innerText);
-  
-      // //Remove the item from todos.
-      // if (flag) {
-      //   for (var i = 0; i < todos.length; i++) {
-      //     if (todos[i].label == listItem.innerText) {
-      //       todos.splice(i, 1);
-      //       console.log(todos);
-      //       removeListItems();
-      //       renderList(todos);
-      //       createAlert('Deleted <u><strong>' + listItem.innerText + '.</strong></u>', 'success');
-      //     }
-      //   }
-  
-      // }
-    }
-
-    function updateListItem() {
-      
-      alert('update item');
-      // var updatedToDo = todoInput.value;
-  
-      // for (var i = 0; i < todos.length; i++) {
-      //   if (todos[i].label == updateToDoItem.innerText) {
-      //     todos[i].label = updatedToDo;
-      //     if (todos[i].label == '') {
-      //       alert("You must write something");
-      //     } else if (/^[a-z\d\s]+$/i.test(todos[i].label)) {
-      //       removeListItems();
-      //       renderList(todos);
-      //       createAlert('updated <u><strong>' + updatedToDo + '.</strong></u>', 'success');
-      //     } else {
-      //       alert("You must write something valid!");
-      //     }
-      //   }
-      // }
-      // todoLabel.innerText = 'New to-do item';
-      // todoInput.innerText = '';
-      // submitBtn.innerText = 'Save';
-    }
-
-      //Editing List Items
+  //Editing List Items
   function editListItem() {
-    alert('edit list item');
-    // updateToDoItem = this.parentElement;
-    // todoLabel.innerText = 'Update to-do item';
-    // todoInput.value = updateToDoItem.innerText;
-    // // updateToDoItem.className = 'alert-item';
-    // submitBtn.innerText = 'Update';
 
+          updateToDoItem = this.parentElement;
+          todoLabel.innerText = 'Update to-do item';
+          (<HTMLInputElement>todoInput).value = updateToDoItem.textContent;
+          // updateToDoItem.className = 'alert-item';
+          submitBtn.textContent = 'Update';
+      
+        }
+
+  function updateListItem() :void {
+      
+    var updatedToDo = (<HTMLInputElement>todoInput).value;
+
+    for (var i = 0; i < todos.length; i++) {
+      if (todos[i].label === updateToDoItem.innerText) {
+        todos[i].label = updatedToDo;
+        if (todos[i].label === '') {
+          alert("You must write something");
+        } else if (/^[a-z\d\s]+$/i.test(todos[i].label)) {
+          removeListItems();
+          renderList(todos);
+          createAlert('updated <u><strong>' + updatedToDo + '.</strong></u>', 'success');
+        } else {
+          alert("You must write something valid!");
+        }
+      }
+    }
+    todoLabel.innerText = 'New to-do item';
+    (<HTMLInputElement>todoInput).value = '';
+    submitBtn.innerText = 'Save';
   }
+
+  //Submit button handler function
+  function handleSubmitBtn() :void{
+    if (submitBtn.textContent == 'Save') {
+      addListItem();
+    } else {
+      updateListItem();
+    }
+  }   
+
+    function createAlert(msg, type) :void{
+
+      let successTitle : string = '<strong>Well done!</strong> You successfully ',
+        dangerTitle : string = '<strong>Something went wrong!</strong> The operation was not successful',
+        dismissBtn : string = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+        parent :HTMLCollection = document.getElementsByClassName('container'),
+        alertTxt :string,
+        cName :string,
+        alert :HTMLElement;
+  
+      if (type === 'success') {
+        cName = 'alert alert-success alert-dismissible fade show';
+        alertTxt = successTitle + msg + dismissBtn;
+      } else if (type === 'danger') {
+        cName = 'alert alert-danger alert-dismissible fade show';
+      } else if (type === 'warning') {
+        cName = 'alert alert-warning alert-dismissible fade show';
+      } else {
+        cName = 'alert alert-info alert-dismissible fade show';
+      }
+      alert = addCSSClass(div, cName);
+      alert.setAttribute('role', 'alert');
+      alert.innerHTML = alertTxt;
+  
+      parent[0].insertBefore(alert, parent[0].firstChild);
+    }
+
+    function removeAlert() :void{
+      let alerts :HTMLCollection= document.getElementsByClassName('alert'),
+        parent = alerts[0].parentElement;
+  
+      parent.removeChild(parent.firstChild);
+    }
 
   function addEventListeners() :void{
     submitBtn.addEventListener("click", handleSubmitBtn); // New item adding event Handler
@@ -152,7 +223,6 @@ let todos: { id: number, label: string }[] = [
 
   function init() :void{
     renderList(todos);
-    //removeList(todos);
     addEventListeners();
 
   }
