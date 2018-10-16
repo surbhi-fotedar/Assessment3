@@ -31,7 +31,7 @@ let todos: { id: number, label: string }[] = [
 
   }
 
-  function removeListItems() {
+  function removeListItems() :void{
     while (listGrp.hasChildNodes()) {
       listGrp.removeChild(listGrp.lastChild);
     }
