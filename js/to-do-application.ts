@@ -1,9 +1,9 @@
-let todos: { id: number, label: string }[] = [
-  { 'id': 0, 'label': 'Learn HTML5' },
-  { 'id': 1, 'label': 'Learn CSS3 & Bootstrap' },
-  { 'id': 2, 'label': 'Learn javascript Basic concepts' },
-  { 'id': 3, 'label': 'Learn Javascript Advanced Concepts' }
-],
+import { Todo } from './to-do.class';
+import { ITodo } from './todo.interface';
+
+let todoObj = new Todo();
+
+let todos: ITodo[] = todoObj.getTodos(),
     listGrp :HTMLElement = document.getElementById('mylist'),
     todoLabel :HTMLElement= document.getElementById('todoLabel'),
     submitBtn :HTMLElement= document.getElementById('submitBtn'),
@@ -82,16 +82,11 @@ let todos: { id: number, label: string }[] = [
     function addListItem() :void{
       let newTodo ={id:todos.length,label:(<HTMLInputElement>todoInput).value};
 
-      if (newTodo.label == '') {
-        alert('You must write something');
-      } else if (/^[a-z\d\s]+$/i.test(newTodo.label)) {
-        todos.push(newTodo);
+      if (todoObj.addTodo(newTodo)) {
         removeListItems();
         renderList(todos);
         createAlert('created <u><strong>' + newTodo.label + '.</strong></u>', 'success');
-      } else {
-        alert('You must write something valid!');
-       }
+      }
       (<HTMLInputElement>todoInput).value = '';
       submitBtn.textContent = 'Save';
     }
